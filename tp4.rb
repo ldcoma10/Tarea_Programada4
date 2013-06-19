@@ -1,22 +1,28 @@
-require 'sinatra'  
-require 'erb'
-require 'twitter'
+#gemas utilizadas
+require 'sinatra' #Se utilizó Sinatra para poder correr la aplicación utilizando un localhost, para así probar que esta funcione de la manera correcta.
+require 'erb' #Embedded Rubí) es un sistema de plantillas que incorpora rubí en un documento de texto. A menudo se utiliza para incrustar código Ruby en un HTML documento, similar a ASP , JSP y PHP .  
+require 'twitter'#se utilizó para buscar los hashtags al igual que el de instagram.
 require 'rubygems'
 require 'instagram'
 
+#clase para buscar tweets
+#entradas el hashtag y la cantidad de hashtags para buscar
 class BuscarTwitter
 	def initialize(hash,cant_hash_tags)
 	
-
+#claves de acceso de twitter
+#oauth=open authorizathion
 		Twitter.configure do |twit|
 		  twit.consumer_key = '4kX6cEQ1rMfkL9yLfwcqA'
 		  twit.consumer_secret = '5Pq8XrycX9piSYn8L62eOXbINcXl35DSJHH1qPgZoc'
 		  twit.oauth_token = '1512498554-kx6xdzH0BAexJakyKjIgrqtSAi9cLLNFH2mIyFc'
 		  twit.oauth_token_secret = 'X1a75zJynGhoyJZxQoYoLb6mJihMpkd5kQNPwalMAs'
 		end
+#Se busca los hashtags en twitter
 		@busqueda = Twitter.search(hash, :count => cant_hash_tags).results.map do |busqueda1|"#{busqueda1.full_text}%&%#{busqueda1.created_at}%&%#{busqueda1.from_user}%&%#{busqueda1.user.profile_image_url}"
 		end
 		end
+#Se devuelve las respuestas generadas
 	def retornoBusqueda()
 		return @busqueda
 	end
